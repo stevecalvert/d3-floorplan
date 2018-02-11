@@ -15,9 +15,9 @@
 //
 
 d3.floorplan.vectorfield = function() {
-	var x = d3.scale.linear(),
-	y = d3.scale.linear(),
-	line = d3.svg.line()
+	var x = d3.scaleLinear(),
+	y = d3.scaleLinear(),
+	line = d3.line()
 		.x(function(d) { return x(d.x); })
 		.y(function(d) { return y(d.y); }),
 	id = "fp-vectorfield-" + new Date().valueOf(),

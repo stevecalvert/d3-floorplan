@@ -18,8 +18,8 @@ d3.floorplan = function() {
 	var layers = [],
 	panZoomEnabled = true,
 	maxZoom = 5,
-	xScale = d3.scale.linear(),
-	yScale = d3.scale.linear();
+	xScale = d3.scaleLinear(),
+	yScale = d3.scaleLinear();
 
 	function map(g) {
 		var width = xScale.range()[1] - xScale.range()[0],
@@ -36,7 +36,8 @@ d3.floorplan = function() {
 			// setup container for layers and area to capture events
 			var vis = g.selectAll(".map-layers").data([0]),
 			visEnter = vis.enter().append("g").attr("class","map-layers"),
-			visUpdate = d3.transition(vis);
+			//visUpdate = d3.transition(vis);
+			visUpdate = vis;
 
 			visEnter.append("rect")
 			.attr("class", "canvas")
@@ -54,8 +55,9 @@ d3.floorplan = function() {
 							.append("g").attr("class","map-controls");
 
 			__init_controls(controlsEnter);
-			var offset = controls.select(".hide")
-						.classed("ui-show-hide") ? 95 : 10,
+			//var offset = controls.select(".hide")
+			//			.classed("ui-show-hide") ? 95 : 10,
+			var offset = 10,
 			panelHt = Math.max(45, 10 + layers.length * 20);
 			controls.attr("view-width", width)
 			.attr("transform", "translate("+(width-offset)+",0)")
@@ -99,7 +101,8 @@ d3.floorplan = function() {
 				.style("font-family", "Helvetica, Arial, sans-serif")
 				.text(function(l) { return l.title(); });
 			
-			layerControls.transition().duration(1000)
+			//layerControls.transition().duration(1000)
+			layerControls
 			.attr("transform", function(d,i) { 
 				return "translate(0," + ((layers.length-(i+1))*20) + ")"; 
 			});
@@ -122,13 +125,13 @@ d3.floorplan = function() {
 			});
 			
 			// add pan - zoom behavior
-			g.call(d3.behavior.zoom().scaleExtent([1,maxZoom])
+			g.call(d3.zoom().
+				scaleExtent([1,maxZoom])
 					.on("zoom", function() {
 						if (panZoomEnabled) {
 							__set_view(g, d3.event.scale, d3.event.translate);
 						}
-					}));
-
+				}));
 		});
 	}
 
@@ -270,8 +273,9 @@ d3.floorplan = function() {
 			})
 			.on("click", function() {
 				if (controls.select(".hide").classed("ui-show-hide")) {
-					controls.transition()
-					.duration(1000)
+					controls
+					//transition()
+					//.duration(1000)
 					.attr("transform", "translate("+(controls.attr("view-width")-10)+",0)")
 					.each("end", function() {
 						controls.select(".hide")
@@ -284,10 +288,11 @@ d3.floorplan = function() {
 						.style("opacity",0.5);
 					});
 				} else {
-					controls.transition()
-					.duration(1000)
+					controls
+					//transition()
+					//.duration(1000)
 					.attr("transform", "translate("+(controls.attr("view-width")-95)+",0)")
-					.each("end", function() {
+					.on("end", function() {
 						controls.select(".show")
 						.style("opacity",0)
 						.classed("ui-show-hide",false);

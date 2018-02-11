@@ -15,21 +15,21 @@
 //
 
 d3.floorplan.overlays = function() {
-	var x = d3.scale.linear(),
-	y = d3.scale.linear(),
+	var x = d3.scaleLinear(),
+	y = d3.scaleLinear(),
 	id = "fp-overlays-" + new Date().valueOf(),
 	name = "overlays",
 	canvasCallbacks = [],
 	selectCallbacks = [],
 	moveCallbacks = [],
 	editMode = false,
-	line = d3.svg.line()
+	line = d3.line()
 		.x(function(d) { return x(d.x); })
 		.y(function(d) { return y(d.y); }),
-	dragBehavior = d3.behavior.drag()
-		.on("dragstart", __dragItem)
+	dragBehavior = d3.drag()
+		.on("start", __dragItem)
 		.on("drag", __mousemove)
-		.on("dragend", __mouseup),
+		.on("end", __mouseup),
 	dragged = null;
 	
 	function overlays(g) {

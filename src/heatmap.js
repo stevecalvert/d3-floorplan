@@ -17,9 +17,9 @@
 d3.floorplan.heatmap = function() {
 	var colors = "RdYlBu",
 	scaleType = "quantile",
-	x = d3.scale.linear(),
-	y = d3.scale.linear(),
-	line = d3.svg.line()
+	x = d3.scaleLinear(),
+	y = d3.scaleLinear(),
+	line = d3.line()
 		.x(function(d) { return x(d.x); })
 		.y(function(d) { return y(d.y); }),
 	format = d3.format(".4n"),
